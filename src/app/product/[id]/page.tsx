@@ -2,10 +2,8 @@ import { stripe } from '@/lib/stripe'
 import Stripe from 'stripe'
 import Image from 'next/image'
 import { Metadata, ResolvingMetadata } from 'next'
-
-export const metadata = {
-  title: 'title',
-}
+import Link from 'next/link'
+import { SizeButtonsContainer } from '@/components/SizeButtonsContainer'
 
 interface Props {
   params: {
@@ -15,7 +13,7 @@ interface Props {
 
 export async function generateMetadata(
   { params }: Props,
-  parent?: ResolvingMetadata,
+  parent?: ResolvingMetadata
 ): Promise<Metadata> {
   // read route params
   const id = params.id
@@ -46,29 +44,46 @@ async function getProduct(productId: string) {
       }).format(price.unit_amount! / 100),
       description: product.description,
       defaultPriceId: price.id,
+      metadata: product.metadata,
     },
   }
 }
 
 export default async function Product({ params }: Props) {
   const { product } = await getProduct(params.id)
-  const { id, name, imageUrl, price, defaultPriceId } = product
+  const { id, name, imageUrl, price, description, metadata, defaultPriceId } =
+    product
+
+  let sizes = null
+  if (metadata.sizes != undefined) {
+    sizes = metadata.sizes.split(',')
+  }
 
   return (
-    <div key={id}>
-      <div className="">
+    <div key={id} className="flex flex-col items-center md:flex-row gap-4">
+      <div className="w-[300px] md:w-auto">
         <Image
           src={imageUrl}
           alt={name}
-          width={600}
-          height={600}
-          sizes="100vw"
+          width={500}
+          height={500}
+          content="cover"
           className="rounded"
         />
       </div>
-      <div className="flex justify-between items-end">
+      <div className="flex flex-col flex-wrap gap-2">
+        {sizes && <SizeButtonsContainer sizes={sizes} />}
+      </div>
+      <div className="flex flex-col max-w-[400px] items-center gap-2">
         <p className="font-bold text-lg">{name}</p>
         <p className="text-sm">{price}</p>
+        <p className="text-sm">{description}</p>
+        <Link
+          href="#"
+          className="bg-p-green-500 rounded text-white font-bold px-4 py-2 hover:opacity-75 duration-100"
+        >
+          Comprar Agora
+        </Link>
       </div>
     </div>
   )
