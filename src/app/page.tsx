@@ -4,7 +4,7 @@ import Link from 'next/link'
 import Stripe from 'stripe'
 
 export const metadata = {
-  title: 'Home | Try Tennis',
+  title: 'Home | Try Sneakers',
 }
 
 async function getData() {
@@ -34,14 +34,13 @@ export default async function Home() {
 
   return (
     <>
-      <h1>Produtos</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+      <div className="grid grid-cols-1 justify-items-center md:grid-cols-2 lg:grid-cols-3 gap-10">
         {data.map((p) => {
           return (
             <Link
               href={`/product/${p.id}`}
               key={p.id}
-              className="relative flex-1 w-[300px] h-[400px] cursor-pointer"
+              className="flex-1 w-[300px] h-[400px] cursor-pointer"
             >
               <div className="overflow-hidden rounded border mb-2">
                 <Image

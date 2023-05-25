@@ -2,8 +2,7 @@ import { stripe } from '@/lib/stripe'
 import Stripe from 'stripe'
 import Image from 'next/image'
 import { Metadata, ResolvingMetadata } from 'next'
-import Link from 'next/link'
-import { SizeButtonsContainer } from '@/components/SizeButtonsContainer'
+import { BuyContainer } from '@/components/BuyContainer'
 
 interface Props {
   params: {
@@ -22,7 +21,7 @@ export async function generateMetadata(
   const { product } = await getProduct(id)
 
   return {
-    title: `${product.name} | Try Tennis`,
+    title: `${product.name} | Try Sneakers`,
   }
 }
 
@@ -60,7 +59,10 @@ export default async function Product({ params }: Props) {
   }
 
   return (
-    <div key={id} className="flex flex-col items-center md:flex-row gap-4">
+    <div
+      key={id}
+      className="flex flex-col items-center md:flex-row md:justify-between gap-4"
+    >
       <div className="w-[300px] md:w-auto">
         <Image
           src={imageUrl}
@@ -71,19 +73,14 @@ export default async function Product({ params }: Props) {
           className="rounded"
         />
       </div>
-      <div className="flex flex-col flex-wrap gap-2">
-        {sizes && <SizeButtonsContainer sizes={sizes} />}
-      </div>
+
       <div className="flex flex-col max-w-[400px] items-center gap-2">
-        <p className="font-bold text-lg">{name}</p>
-        <p className="text-sm">{price}</p>
-        <p className="text-sm">{description}</p>
-        <Link
-          href="#"
-          className="bg-p-green-500 rounded text-white font-bold px-4 py-2 hover:opacity-75 duration-100"
-        >
-          Comprar Agora
-        </Link>
+        <p className="font-bold text-2xl">{name}</p>
+        <p className="text-lg">{price}</p>
+        <p className="text-sm text-justify">{description}</p>
+        <div className="flex flex-col flex-wrap gap-2">
+          {sizes && <BuyContainer sizes={sizes} />}
+        </div>
       </div>
     </div>
   )
