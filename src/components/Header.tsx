@@ -1,11 +1,11 @@
 import { HeaderLinks } from './HeaderLinks'
-import Logo from '../../public/try sneakers.png'
+import Logo from '../app/icon.png'
 import Image from 'next/image'
 import Link from 'next/link'
 
 export function Header() {
   return (
-    <header className="flex justify-between items-center py-2 sticky">
+    <header className="flex justify-between items-center py-3 mb-5 sticky">
       <Link href="/">
         <Image
           src={Logo}
